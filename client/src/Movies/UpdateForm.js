@@ -7,31 +7,30 @@ const initialItem = {
     title: '',
     director: '',
     metascore: '',
-    stars: []
 };
 
 const UpdateForm = (props) => {
     const { push } = useHistory();
     const { id } = useParams();
-    const[item, setItem] = useState(initialItem);
+    const[updatedMovie, setUpdatedMovie] = useState(initialItem);
 
     useEffect(() => {
-        const getItems = () => {
+        const getMovie = () => {
             axios
-                .get(`http://localhost:5000/api/movies/${id}`)
-                .then((res) => {
-                    setItem(res.data)
-                })
-                .catch((err) => {
-                    console.log(err)
-                });
+            .get(`http://localhost:5000/api/movies/${id}`)
+            .then((res) => {
+                setUpdatedMovie(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            });
         };
-        getItems();
-    }, []);
+        getMovie(id);
+    }, [id]);
 
     const handleChange = (e) => {
-        setItem({
-            ...item,
+        setUpdatedMovie({
+            ...updatedMovie,
             [e.target.name]: e.target.value
         });
     };
@@ -39,10 +38,9 @@ const UpdateForm = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-            .put(`http://localhost:5000/api/movies/${id}`, item)
+            .put(`http://localhost:5000/api/movies/${id}`, updatedMovie)
             .then(res => {
-                console.log(res)
-                props.setMovieList(res.data);
+                setUpdatedMovie(res.data);
                 push('/movies')
             })
             .catch(err => {
@@ -56,33 +54,26 @@ const UpdateForm = (props) => {
             <form onSubmit={handleSubmit}>
                 <input
                 name="title" 
-                placeholder="Title"
+                placeholder="Movie Title"
                 type="text"
-                value={item.title}
+                value={updatedMovie.title}
                 onChange={handleChange}
                 />
                 <input 
                 name="director" 
                 placeholder="Director"
                 type="text"
-                value={item.director}
+                value={updatedMovie.director}
                 onChange={handleChange}
                 />
                 <input 
                 name="metascore" 
                 placeholder="Metascore"
                 type="text"
-                value={item.metascore}
+                value={updatedMovie.metascore}
                 onChange={handleChange}
                 />
-                <input 
-                name="stars"
-                placeholder="Stars"
-                type="text"
-                value={item.stars}
-                onChange={handleChange}
-                />
-                <button>Update</button>
+                <button type="submit">Update</button>
             </form>
         </div>
     );
