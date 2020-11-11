@@ -9,13 +9,13 @@ const initialMovie = {
     metascore: '',
 };
 
-const UpdateMovie = () => {
+const UpdateMovie = (props) => {
     const { push } = useHistory();
     const { id } = useParams();
     const[updatedMovie, setUpdatedMovie] = useState(initialMovie);
 
     useEffect(() => {
-        const getMovie = () => {
+        const getMovie = (id) => {
             axios
             .get(`http://localhost:5000/api/movies/${id}`)
             .then((res) => {
@@ -25,8 +25,8 @@ const UpdateMovie = () => {
                 console.log(err)
             });
         };
-        getMovie();
-    }, []);
+        getMovie(id);
+    }, [id]);
 
     const handleChange = (e) => {
         setUpdatedMovie({
@@ -41,6 +41,14 @@ const UpdateMovie = () => {
             .put(`http://localhost:5000/api/movies/${id}`, updatedMovie)
             .then(res => {
                 setUpdatedMovie(res.data);
+
+            const newMovieList = props.movieList.map(movie => {
+                if (`${movie.id}` === id){
+                    return res.data
+                }
+                return movie
+            })
+                props.setMovieList(newMovieList)
                 push('/')
             })
             .catch(err => {

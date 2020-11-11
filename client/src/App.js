@@ -27,21 +27,23 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <div>
       <SavedList list={savedList} />
 
       <Route exact path="/">
-        <MovieList movies={movieList} />
+        <MovieList movies={movieList} setMovieList={setMovieList}/>
       </Route>
 
       <Route path="/movies/:id">
         <Movie addToSavedList={addToSavedList} setMovieList={setMovieList}/>
       </Route>
 
-      <Route path="/update-movie/:id" component={UpdateMovie}/>
+      <Route path="/update-movie/:id">
+        <UpdateMovie setMovieList={setMovieList} movieList={movieList}/>
+        </Route>
 
       <Route path="/add-movie" />
-    </>
+    </div>
   );
 };
 
