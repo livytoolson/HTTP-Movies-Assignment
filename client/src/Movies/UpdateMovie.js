@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-const initialItem = {
+const initialMovie = {
     id: Date.now(),
     title: '',
     director: '',
     metascore: '',
 };
 
-const UpdateForm = (props) => {
+const UpdateMovie = () => {
     const { push } = useHistory();
     const { id } = useParams();
-    const[updatedMovie, setUpdatedMovie] = useState(initialItem);
+    const[updatedMovie, setUpdatedMovie] = useState(initialMovie);
 
     useEffect(() => {
         const getMovie = () => {
@@ -79,4 +79,4 @@ const UpdateForm = (props) => {
     );
 };
 
-export default UpdateForm;
+export default UpdateMovie;
